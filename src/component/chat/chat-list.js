@@ -10,7 +10,9 @@ import Dialog, {
 import Typography from 'material-ui/Typography';
 import {withStyles} from 'material-ui/styles';
 import withRoot from '../../withRoot';
-import Input from 'material-ui/Input';
+import IconButton from 'material-ui/IconButton';
+import Input,{InputAdornment} from 'material-ui/Input';
+import ClearIcon from '../icons/ClearIcon';
 import ChatItem from './chat-item';
 
 const styles = theme => ({
@@ -38,6 +40,23 @@ const styles = theme => ({
 class Index extends React.Component {
     state = {
         open: false,
+        search:'',
+        showPassword:false,
+    };
+
+    handleChange = prop => event => {
+        var showPassword = event.target.value.length>0;
+        this.setState({
+            [prop]: event.target.value,
+            showPassword,
+        });
+    };
+
+    handleClickShowPasssword = () => {
+        this.setState({
+            search:'',
+            showPassword: false
+        });
     };
 
     render() {
@@ -52,6 +71,18 @@ class Index extends React.Component {
                         inputProps={{
                             'aria-label': 'search',
                         }}
+                        value={this.state.search}
+                        onChange={this.handleChange('search')}
+                        endAdornment={
+                            <InputAdornment position="end">
+                                <IconButton
+                                    onClick={this.handleClickShowPasssword}
+                                    onMouseDown={this.handleMouseDownPassword}
+                                >
+                                    {this.state.showPassword ? <ClearIcon /> : null}
+                                </IconButton>
+                            </InputAdornment>
+                        }
                     />
                 </div>
                 <div className={classes.list}>

@@ -106,7 +106,7 @@ class Index extends React.Component {
                     </div>
 
                 </div>
-                <div style={{height: 1, width: 250, marginLeft: 10, background: '#E8E8E8'}}/>
+                <div style={{height: 1, width: 255, marginLeft: 10, background: '#E8E8E8'}}/>
             </div>
         );
     }
