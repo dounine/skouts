@@ -14,9 +14,10 @@ import withRoot from '../../withRoot';
 
 const styles = theme => ({
     userHandImg: {
-        width: 50,
-        height: 50,
+        width: 36,
+        height: 36,
         borderRadius: 2,
+        marginLeft:20,
     },
 });
 
@@ -30,83 +31,47 @@ class Index extends React.Component {
 
         return (
 
-            <div>
+            <div style={{
+                width:'100%',
+                float:'left',
+                margin:'8px 0'
+            }}>
                 <div style={{
-                    height: 80,
-                    // background: '#DFDFDF',
+                    width:70,
+                    height:36,
+                    float:'right'
                 }}>
-                    <div style={{
-                        paddingTop: 15,
-
-                    }}>
-                        <div style={{
-                            float: 'left',
-                            width: 70,
-                            textAlign: 'center',
-
-                        }}>
-                            <img className={classes.userHandImg}
-                                 src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1121475478,2545730346&fm=27&gp=0.jpg"/>
-                        </div>
-                        <div>
-                            <div
-                                style={{
-                                    marginTop: 1,
-                                    height: 28,
-                                }}
-                            >
-                                <div style={{
-                                    width: 100,
-                                    fontWeight: 500,
-                                    fontSize: 14,
-                                    float: 'left',
-                                    // color:'#4C2600',
-                                    overflow: 'hidden',
-                                    textOverflow: 'ellipsis',
-                                    whiteSpace: 'nowrap',
-
-                                }}>艾佳生活交流群
-                                </div>
-                                <div style={{
-                                    width: 76,
-                                    marginLeft: 6,
-                                    fontSize: 14,
-                                    fontWeight: 600,
-                                    color: '#B6B7B9',
-                                    float: 'right',
-                                    textAlign: 'center'
-                                }}>12:12
-                                </div>
-                            </div>
-                            <div>
-                                <div
-                                    style={{
-                                        float: 'left',
-                                        width: 160,
-                                        fontSize: 13,
-                                        color: '#868181',
-                                        fontWeight: 500,
-                                        overflow: 'hidden',
-                                        textOverflow: 'ellipsis',
-                                        whiteSpace: 'nowrap',
-                                    }}
-                                >
-                                    恩恩，亲你早点休息咯，哈哈哈哈哈哈
-                                </div>
-                                <i style={{
-                                    float: 'left',
-                                    width: 18,
-                                    height: 18,
-                                    fontSize: 18,
-                                    padding: 1,
-                                    color: '#bababa',
-                                }} className="iconfont icon-voice"/>
-                            </div>
-                        </div>
-                    </div>
-
+                    <img className={classes.userHandImg} src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1121475478,2545730346&fm=27&gp=0.jpg" alt="lake"/>
                 </div>
-                <div style={{height: 1, width: 255, marginLeft: 10, background: '#E8E8E8'}}/>
+                <div
+                    style={{
+                        borderRadius:4,
+                        float:'right',
+                        background:'#FFF',
+                        minHeight:36,
+                        position:'relative'
+                    }}
+                >
+                    <div
+                        style={{
+                            position: 'absolute',
+                            top: 14,
+                            right: -6,
+                            width: 0,
+                            height: 0,
+                            borderTop: '4px solid transparent',
+                            borderLeft: '8px solid white',
+                            borderBottom: '4px solid transparent',
+                        }}
+                    />
+                    <div style={{
+                        padding:'4px 10px',
+                        fontSize:16,
+                        maxWidth:400,
+                    }}>
+                        hello
+                    </div>
+                </div>
             </div>
         );
     }

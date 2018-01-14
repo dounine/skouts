@@ -3,19 +3,15 @@ import PropTypes from 'prop-types';
 import {withStyles} from 'material-ui/styles';
 import withRoot from '../withRoot';
 import ChatList from '../component/chat/chat-list';
-import TextField from 'material-ui/TextField';
-import EmosIcon from '../component/icons/EmosIcon';
-import PhotoIcon from '../component/icons/PhotoIcon';
-import TranslateIcon from '../component/icons/TranslateIcon';
-import VoiceSpeakIcon from '../component/icons/VoiceSpeakIcon';
-import ChatThey from '../component/chat/chat-they';
+import ChatInput from './ChatInput';
+
 
 const styles = theme => ({
     box: {
         width: '100%',
         height: '100%',
         display: 'flex',
-        overflowY:'hidden'
+        overflowY: 'hidden'
     },
     nav: {
         display: 'flex',
@@ -57,15 +53,14 @@ const styles = theme => ({
         background: '#F3F3F3'
     },
 
-
     userBar: {
         display: 'flex',
         width: '100%',
         height: 48,
-        alignItems:'center',
-        textIndent:20,
-        fontSize:16,
-        fontWeight:400,
+        alignItems: 'center',
+        textIndent: 20,
+        fontSize: 16,
+        fontWeight: 400,
         border: '1px solid #E2E2E2',
         borderTop: 0,
         borderLeft: 0,
@@ -76,43 +71,47 @@ const styles = theme => ({
         // background:'#9cf'
     },
     chatInput: {
-        display:'flex',
-        flexDirection:'column'
+        display: 'flex',
+        flexDirection: 'column'
         // height:'40%',
         // background:'red'
     },
-    chatBar:{
-        border:'1px solid #E2E2E2',
-        borderLeft:0,
-        borderRight:0,
-        borderBottom:0,
-        height:50,
-        paddingTop:6,
+    chatBar: {
+        border: '1px solid #E2E2E2',
+        borderLeft: 0,
+        borderRight: 0,
+        borderBottom: 0,
+        height: 50,
+        paddingTop: 6,
     },
-    inputText:{
-        fontSize:16,
-        width:'96%',
-        height:'96%',
-        margin:'2%',
-        background:'#F3F3F3',
-        border:0,
-        outline:'none',
-        resize:'none'
+    inputText: {
+        fontSize: 16,
+        width: '96%',
+        height: 100,
+        overflowY: 'scroll',
+        margin: '2%',
+        background: '#F3F3F3',
+        border: 0,
+        outline: 'none',
+        resize: 'none'
     }
 });
 
 class Index extends React.Component {
     state = {
         open: false,
-        inputValue:''
+        inputValue: {__html: 'hello'},
+        chatObj: undefined,
     };
 
-    inputHandleChange = prop => event => {
-        var showPassword = event.target.value.length>0;
-        this.setState({
-            [prop]: event.target.value,
+    componentDidMount() {
+        let $this = this;
+        window.EVENT.addListener('chatItemClick', function (chatObj) {
+            $this.setState({
+                chatObj
+            });
         });
-    };
+    }
 
     render() {
         const {classes} = this.props;
@@ -177,62 +176,7 @@ class Index extends React.Component {
                         <ChatList/>
                     </div>
                 </div>
-                <div className={classes.chatContent}>
-
-                    <div style={{
-                        display: 'flex',
-                        flexDirection:'column',
-                        height:'100%'
-                    }}>
-                        <div className={classes.chatMessages}>
-                            <div className={classes.userBar}>
-                                黄焕来
-                            </div>
-                            <div style={{
-                                height:300,
-                                overflowY:'scroll'
-                            }}>
-                                <ChatThey/>
-                            </div>
-                        </div>
-                        <div className={classes.chatInput}>
-                            <div className={classes.chatBar}>
-                                <div style={{
-                                    float:'left',
-                                    marginLeft:20,
-                                }}>
-                                    <EmosIcon fontSize={24}/>
-                                </div>
-                                <div style={{
-                                    float:'left',
-                                    marginLeft:20,
-                                }}>
-                                    <PhotoIcon fontSize={24}/>
-                                </div>
-                                <div style={{
-                                    float:'right',
-                                    marginRight:20,
-                                }}>
-                                    <TranslateIcon fontSize={24}/>
-                                </div>
-                                <div style={{
-                                    float:'right',
-                                    marginRight:20,
-                                }}>
-                                    <VoiceSpeakIcon fontSize={24}/>
-                                </div>
-                            </div>
-                            <div style={{
-                                // flex:1,
-                                // flex:1,
-                                // background:'red'
-                            }}>
-                                <textarea onChange={this.inputHandleChange('inputValue')} autoFocus={true} className={classes.inputText} cols="30" rows="10" value={this.state.inputValue}/>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
+                <ChatInput data={this.state.chatObj}/>
             </div>
 
         );

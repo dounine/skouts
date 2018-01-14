@@ -3,10 +3,12 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.17.1",
     "material-ui": "next",
     "prop-types": "latest",
     "react": "latest",
     "react-dom": "latest",
+    "react-native-xml2js": "^1.0.3",
     "react-scripts": "latest"
   },
   "scripts": {

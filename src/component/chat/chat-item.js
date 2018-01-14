@@ -11,6 +11,8 @@ import Typography from 'material-ui/Typography';
 import {withStyles} from 'material-ui/styles';
 import Input from 'material-ui/Input';
 import withRoot from '../../withRoot';
+import TimeUtils from '../../constants/TimeUtils';
+import ImageUtils from '../../constants/ImageUtils';
 
 const styles = theme => ({
     userHandImg: {
@@ -23,17 +25,52 @@ const styles = theme => ({
 class Index extends React.Component {
     state = {
         open: false,
+        lastMsgId:this.props.data.last_message.id,
+        // active:false,
     };
 
+    getFriendData = (dt) =>{
+        let time = new Date(dt);
+        let yesdayTime = (time.timeBetween()[0] === 'd' && time.timeBetween()[1] === 1);
+        let beforeYesdayTime = (time.timeBetween()[0] === 'd' && time.timeBetween()[1] > 1 && time.timeBetween()[1] < 7);
+        let isHMS = time.timeBetween()[0] === 'h' || time.timeBetween()[0] === 'm' || time.timeBetween()[0] === 's';
+        let ddays = null;
+        if (beforeYesdayTime) {
+            let ds = ['日', '一', '二', '三', '四', '五', '六'];
+            ddays = '星期' + ds[time.getDay()];
+        }
+        let friendsDay = yesdayTime ? '昨天' : (ddays ? ddays : (isHMS ? time.pattern('HH:mm') : time.pattern('MM-dd')));
+        return friendsDay;
+    };
+
+    chatItemClick = () =>{
+        window.EVENT.emit('chatItemClick',this.props.data);
+    };
+
+    shouldComponentUpdate(nextProps, state) {
+        if(nextProps.data.last_message.id!==state.lastMsgId){
+            return true;
+        }
+        if(nextProps.data.active!==undefined){
+            return true;
+        }
+        console.log.apply(console,['不修改']);
+        return false;
+    }
+
+
     render() {
-        const {classes} = this.props;
+        const {classes,data} = this.props;
+        let friendsDay = this.getFriendData(data.last_message.dt);
 
         return (
 
-            <div>
+            <div
+                onClick={this.chatItemClick}
+            >
                 <div style={{
                     height: 80,
-                    // background: '#DFDFDF',
+                    background:data.active?'#DFDFDF':'#F9F9F9'
                 }}>
                     <div style={{
                         paddingTop: 15,
@@ -46,7 +83,7 @@ class Index extends React.Component {
 
                         }}>
                             <img className={classes.userHandImg}
-                                 src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1121475478,2545730346&fm=27&gp=0.jpg"/>
+                                 src={ImageUtils(data.user.image_url)}/>
                         </div>
                         <div>
                             <div
@@ -65,7 +102,7 @@ class Index extends React.Component {
                                     textOverflow: 'ellipsis',
                                     whiteSpace: 'nowrap',
 
-                                }}>艾佳生活交流群
+                                }}>{data.user.name}
                                 </div>
                                 <div style={{
                                     width: 76,
@@ -75,7 +112,7 @@ class Index extends React.Component {
                                     color: '#B6B7B9',
                                     float: 'right',
                                     textAlign: 'center'
-                                }}>12:12
+                                }}>{friendsDay}
                                 </div>
                             </div>
                             <div>
@@ -91,7 +128,7 @@ class Index extends React.Component {
                                         whiteSpace: 'nowrap',
                                     }}
                                 >
-                                    恩恩，亲你早点休息咯，哈哈哈哈哈哈
+                                    {data.last_message.text}
                                 </div>
                                 <i style={{
                                     float: 'left',
@@ -112,8 +149,8 @@ class Index extends React.Component {
     }
 }
 
-Index.propTypes = {
-    classes: PropTypes.object.isRequired,
-};
+// Index.propTypes = {
+//     classes: PropTypes.object.isRequired,
+// };
 
 export default withRoot(withStyles(styles)(Index));

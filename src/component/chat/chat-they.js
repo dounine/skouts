@@ -11,6 +11,7 @@ import Typography from 'material-ui/Typography';
 import {withStyles} from 'material-ui/styles';
 import Input from 'material-ui/Input';
 import withRoot from '../../withRoot';
+import ImageUtils from "../../constants/ImageUtils";
 
 const styles = theme => ({
     userHandImg: {
@@ -24,23 +25,33 @@ const styles = theme => ({
 class Index extends React.Component {
     state = {
         open: false,
+        data:this.props.data,
     };
 
+    shouldComponentUpdate(nextProps,state) {
+        if(nextProps.id===state){
+            return false;
+        }
+        return true;
+    }
+
     render() {
-        const {classes} = this.props;
+        const {classes,data,handImg} = this.props;
 
         return (
 
             <div style={{
-                maxWidth:470,
-                margin:'10px 0'
+                width:'100%',
+                float:'left',
+                // maxWidth:470,
+                margin:'8px 0'
             }}>
                 <div style={{
                     width:70,
                     height:36,
                     float:'left'
                 }}>
-                    <img className={classes.userHandImg} src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1121475478,2545730346&fm=27&gp=0.jpg" alt="lake"/>
+                    <img className={classes.userHandImg} src={ImageUtils(handImg)} alt="lake"/>
                 </div>
                 <div
                     style={{
@@ -58,9 +69,9 @@ class Index extends React.Component {
                             left: -6,
                             width: 0,
                             height: 0,
-                            'border-top': '4px solid transparent',
-                            'border-right': '8px solid white',
-                            'border-bottom': '4px solid transparent',
+                            borderTop: '4px solid transparent',
+                            borderRight: '8px solid white',
+                            borderBottom: '4px solid transparent',
                         }}
                     />
                     <div style={{
@@ -68,7 +79,7 @@ class Index extends React.Component {
                         fontSize:16,
                         maxWidth:400,
                     }}>
-                        咋啦咋啦咋啦咋啦咋啦咋啦咋啦咋啦咋啦咋啦咋啦咋啦咋啦咋啦咋啦咋啦咋啦咋啦咋啦咋啦咋啦咋啦咋啦咋啦咋啦咋啦咋啦咋啦咋啦咋啦咋啦
+                        {data.text}
                     </div>
                 </div>
             </div>
