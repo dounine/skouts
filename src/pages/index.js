@@ -8,6 +8,7 @@ import EmosIcon from '../component/icons/EmosIcon';
 import PhotoIcon from '../component/icons/PhotoIcon';
 import TranslateIcon from '../component/icons/TranslateIcon';
 import VoiceSpeakIcon from '../component/icons/VoiceSpeakIcon';
+import ChatThey from '../component/chat/chat-they';
 
 const styles = theme => ({
     box: {
@@ -61,6 +62,10 @@ const styles = theme => ({
         display: 'flex',
         width: '100%',
         height: 48,
+        alignItems:'center',
+        textIndent:20,
+        fontSize:16,
+        fontWeight:400,
         border: '1px solid #E2E2E2',
         borderTop: 0,
         borderLeft: 0,
@@ -187,19 +192,7 @@ class Index extends React.Component {
                                 height:300,
                                 overflowY:'scroll'
                             }}>
-                                <div>hello</div>
-                                <div>hello</div>
-                                <div>hello</div>
-                                <div>hello</div>
-                                <div>hello</div>
-                                <div>hello</div>
-                                <div>hello</div>
-                                <div>hello</div>
-                                <div>hello</div>
-                                <div>hello</div>
-                                <div>hello</div>
-                                <div>hello</div>
-                                <div>hello</div>
+                                <ChatThey/>
                             </div>
                         </div>
                         <div className={classes.chatInput}>
