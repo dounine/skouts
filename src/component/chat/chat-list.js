@@ -52,7 +52,26 @@ class Index extends React.Component {
         this.source = window.AXIOS.CancelToken.source();
         var items = localStorage.getItem('chatItems');
         if(items){//读取缓存聊天列表
-            this.state.chatItems = JSON.parse(items) || [];;
+            let objs = JSON.parse(items);
+            let clickItemId = localStorage.getItem('clickItemId');
+            if(clickItemId){
+                for(let obj of objs){
+                    if((obj.user.id+"")===clickItemId){
+                        obj.active = true;
+                        setTimeout(function () {
+                            window.EVENT.emit('chatItemClick',obj)
+                        });
+                        break;
+                    }
+                }
+            }else{
+                objs[0].active = true;
+                setTimeout(function () {
+                    localStorage.setItem('clickItemId',objs[0].user.id);
+                    window.EVENT.emit('chatItemClick',objs[0])
+                })
+            }
+            this.state.chatItems = objs || [];;
         }
     }
 
@@ -75,11 +94,14 @@ class Index extends React.Component {
         };
         window.FETCH(config).then(function (response) {
             if (response.data) {
-                $this.setState({
-                    chatItems: response.data.elements
-                }, function () {
-                    localStorage.setItem('chatItems', JSON.stringify(response.data.elements));
-                });
+                if(JSON.stringify(response.data.elements)!==localStorage.getItem('chatItems')){
+                    $this.setState({
+                        chatItems: response.data.elements
+                    }, function () {
+                        localStorage.setItem('chatItems', JSON.stringify(response.data.elements));
+                    });
+                }
+
             }
         }).catch(function (err) {
             // console.log.apply(console,[err]);
@@ -92,9 +114,10 @@ class Index extends React.Component {
                 }else if(item.active!==undefined){
                     item.active = false;
                 }
-                // console.log.apply(console,['来',item]);
             }
-            $this.setState({});
+            $this.setState({},function () {
+                // $this.renderMessages();
+            });
             // $this.setState({
             //     chatObj
             // },function () {

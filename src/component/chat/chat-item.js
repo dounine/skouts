@@ -44,6 +44,7 @@ class Index extends React.Component {
     };
 
     chatItemClick = () =>{
+        localStorage.setItem('clickItemId',this.props.data.user.id);
         window.EVENT.emit('chatItemClick',this.props.data);
     };
 
@@ -70,7 +71,7 @@ class Index extends React.Component {
             >
                 <div style={{
                     height: 80,
-                    background:data.active?'#DFDFDF':'#F9F9F9'
+                    background:data.active===true?'#DFDFDF':'#F9F9F9'
                 }}>
                     <div style={{
                         paddingTop: 15,
