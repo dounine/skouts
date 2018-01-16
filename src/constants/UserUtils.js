@@ -4,13 +4,6 @@ import withRoot from "../withRoot";
 import URLS from './Urls';
 import {withStyles} from "material-ui/styles/index";
 
-export const USER_SESSION_ID = "userSessionId";
-export const USER_LOGIN_STATUS = "userStatus";
-export const USER_INFO = "userInfo";
-export const USER_ID = "userId";
-export const sessionId = 'ac1a1105-5c7e-493e-ae9e-1c4236bdcf2c';
-export const isDevelop = false;
-
 const styles = theme => ({});
 class UserUtils extends React.Component {
 

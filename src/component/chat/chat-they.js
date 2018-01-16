@@ -11,7 +11,7 @@ import Typography from 'material-ui/Typography';
 import {withStyles} from 'material-ui/styles';
 import Input from 'material-ui/Input';
 import withRoot from '../../withRoot';
-import ImageUtils from "../../constants/ImageUtils";
+import ImageUtils, {TYPES} from "../../constants/ImageUtils";
 
 const styles = theme => ({
     userHandImg: {
@@ -51,7 +51,7 @@ class Index extends React.Component {
                     height:34,
                     float:'left'
                 }}>
-                    <img className={classes.userHandImg} src={ImageUtils(handImg)} alt="lake"/>
+                    <img className={classes.userHandImg} src={ImageUtils(handImg,TYPES.tn65)} alt="lake"/>
                 </div>
                 <div
                     style={{

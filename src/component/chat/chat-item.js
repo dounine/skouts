@@ -12,7 +12,7 @@ import {withStyles} from 'material-ui/styles';
 import Input from 'material-ui/Input';
 import withRoot from '../../withRoot';
 import TimeUtils from '../../constants/TimeUtils';
-import ImageUtils from '../../constants/ImageUtils';
+import ImageUtils,{TYPES} from '../../constants/ImageUtils';
 
 const styles = theme => ({
     userHandImg: {
@@ -82,7 +82,7 @@ class Index extends React.Component {
 
                         }}>
                             <img className={classes.userHandImg}
-                                 src={ImageUtils(data.user.image_url)}/>
+                                 src={ImageUtils(data.user.image_url,TYPES.tn65)}/>
                         </div>
                         <div>
                             <div

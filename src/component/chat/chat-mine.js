@@ -11,11 +11,12 @@ import Typography from 'material-ui/Typography';
 import {withStyles} from 'material-ui/styles';
 import Input from 'material-ui/Input';
 import withRoot from '../../withRoot';
+import ImageUtils,{TYPES} from "../../constants/ImageUtils";
 
 const styles = theme => ({
     userHandImg: {
-        width: 36,
-        height: 36,
+        width: 34,
+        height: 34,
         borderRadius: 2,
         marginLeft:20,
     },
@@ -27,7 +28,7 @@ class Index extends React.Component {
     };
 
     render() {
-        const {classes} = this.props;
+        const {classes,data} = this.props;
 
         return (
 
@@ -38,17 +39,17 @@ class Index extends React.Component {
             }}>
                 <div style={{
                     width:70,
-                    height:36,
+                    height:34,
                     float:'right'
                 }}>
-                    <img className={classes.userHandImg} src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1121475478,2545730346&fm=27&gp=0.jpg" alt="lake"/>
+                    <img className={classes.userHandImg} src={ImageUtils(window.USER_INFO.image_url,TYPES.tn65)} alt="lake"/>
                 </div>
                 <div
                     style={{
                         borderRadius:4,
                         float:'right',
                         background:'#FFF',
-                        minHeight:36,
+                        minHeight:34,
                         position:'relative'
                     }}
                 >
@@ -69,7 +70,7 @@ class Index extends React.Component {
                         fontSize:16,
                         maxWidth:400,
                     }}>
-                        hello
+                        {data.text}
                     </div>
                 </div>
             </div>

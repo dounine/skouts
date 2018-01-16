@@ -145,7 +145,11 @@ class Index extends React.Component {
                 return null;
             }
             for (const data of $this.state.chatMessages) {
-                yield <ChatThey data={data} handImg={$this.state.chatObj.user.image_url} key={data.id}/>;
+                if(data.to===window.USER_INFO.id){
+                    yield <ChatThey data={data} handImg={$this.state.chatObj.user.image_url} key={data.id}/>;
+                }else{
+                    yield <ChatMine data={data} handImg={window.USER_INFO.image_url} key={data.id}/>;
+                }
             }
         };
 
