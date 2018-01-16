@@ -74,7 +74,6 @@ class Index extends React.Component {
                 }}>
                     <div style={{
                         paddingTop: 15,
-
                     }}>
                         <div style={{
                             float: 'left',
@@ -97,7 +96,6 @@ class Index extends React.Component {
                                     fontWeight: 500,
                                     fontSize: 14,
                                     float: 'left',
-                                    // color:'#4C2600',
                                     overflow: 'hidden',
                                     textOverflow: 'ellipsis',
                                     whiteSpace: 'nowrap',

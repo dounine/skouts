@@ -15,8 +15,8 @@ import ImageUtils from "../../constants/ImageUtils";
 
 const styles = theme => ({
     userHandImg: {
-        width: 36,
-        height: 36,
+        width: 34,
+        height: 34,
         borderRadius: 2,
         marginLeft:20,
     },
@@ -48,7 +48,7 @@ class Index extends React.Component {
             }}>
                 <div style={{
                     width:70,
-                    height:36,
+                    height:34,
                     float:'left'
                 }}>
                     <img className={classes.userHandImg} src={ImageUtils(handImg)} alt="lake"/>
@@ -58,7 +58,7 @@ class Index extends React.Component {
                         borderRadius:4,
                         float:'left',
                         background:'#FFF',
-                        minHeight:36,
+                        minHeight:34,
                         position:'relative'
                     }}
                 >

@@ -92,6 +92,11 @@ class Index extends React.Component {
         });
     };
 
+    scrollBottom = () =>{
+        let div = document.getElementById('chatContainer');
+        div.scrollTop = div.scrollHeight;
+    };
+
     renderMessages = () => {
         let $this = this;
         let config = {
@@ -106,15 +111,20 @@ class Index extends React.Component {
         };
         var messages = localStorage.getItem('msg-' + $this.state.chatObj.user.id);
         $this.setState({
-            chatMessages:JSON.parse(messages)
+            chatMessages: JSON.parse(messages)
+        }, function () {
+            $this.scrollBottom();
         });
+        if (messages) return;
         window.FETCH(config).then(function (response) {
             console.log.apply(console, ['聊天消息查询完成', response.data]);
             //消息阅读
-            if(messages!==JSON.stringify(response.data.elements)){
+            if (messages !== JSON.stringify(response.data.elements)) {
                 localStorage.setItem('msg-' + $this.state.chatObj.user.id, JSON.stringify(response.data.elements));
                 $this.setState({
                     chatMessages: response.data.elements
+                },function () {
+                    $this.scrollBottom();
                 });
             }
         }).catch(function (err) {
@@ -151,9 +161,9 @@ class Index extends React.Component {
                         <div className={classes.userBar}>
                             {this.state.chatObj.user.name}
                         </div>
-                        <div style={{
+                        <div id={"chatContainer"} style={{
                             height: 300,
-                            overflowY: 'scroll'
+                            overflowY: 'auto'
                         }}>
                             {[...asTags()]}
                         </div>

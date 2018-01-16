@@ -35,7 +35,7 @@ const styles = theme => ({
     list: {
         marginTop: 10,
         overflowY: 'scroll',
-        height: 300,
+        height: document.body.clientHeight,
     }
 });
 
@@ -74,7 +74,6 @@ class Index extends React.Component {
             cancelToken: $this.source.token,
         };
         window.FETCH(config).then(function (response) {
-            console.log.apply(console, [response]);
             if (response.data) {
                 $this.setState({
                     chatItems: response.data.elements

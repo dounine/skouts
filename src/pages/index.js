@@ -4,6 +4,7 @@ import {withStyles} from 'material-ui/styles';
 import withRoot from '../withRoot';
 import ChatList from '../component/chat/chat-list';
 import ChatInput from './ChatInput';
+import ImageUtils from "../constants/ImageUtils";
 
 
 const styles = theme => ({
@@ -115,7 +116,6 @@ class Index extends React.Component {
 
     render() {
         const {classes} = this.props;
-
         return (
             <div className={classes.box}>
                 <div className={classes.nav}>
@@ -147,7 +147,7 @@ class Index extends React.Component {
                         <div className={classes.navHand}>
                             <img
                                 className={classes.handImg}
-                                src={"https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1121475478,2545730346&fm=27&gp=0.jpg"}
+                                src={ImageUtils(window.USER_INFO.image_url)}
                             />
                         </div>
                         <div className={classes.funIcon}>
