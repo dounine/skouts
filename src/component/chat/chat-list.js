@@ -9,6 +9,7 @@ import Dialog, {
 } from 'material-ui/Dialog';
 import Typography from 'material-ui/Typography';
 import {withStyles} from 'material-ui/styles';
+import {parseString} from 'react-native-xml2js';
 import withRoot from '../../withRoot';
 import IconButton from 'material-ui/IconButton';
 import Input, {InputAdornment} from 'material-ui/Input';
@@ -92,6 +93,61 @@ class Index extends React.Component {
             transformResponse: window.TRANSFORM_RESPONSE_JSON,
             cancelToken: $this.source.token,
         };
+        let featureConfig = {
+            url: URLS.IOS_FEATURE_ME,
+            headers: {
+                session_id: null
+            },
+            params: {
+                ...window.API_INFO,
+            }
+        };
+        window.FETCH(featureConfig).then(function (response) {
+            console.log.apply(console,['信息',response]);
+        }).catch(function (err) {
+            // console.log.apply(console,[err]);
+        });
+        let cconfig = {
+            method: 'POST',
+            url: URLS.IOS_MUTUAL_USERS,
+            headers: {
+                // session_id:SESSION_ID,
+                _protocol: 'http://i',
+            },
+            data: {
+                ...window.API_INFO,
+                gender: 0,
+                includeMeetMeUsers: true,
+                interestedIn: 0,
+                noOfElements: 18,
+                searchEthnicityMulti: '',
+                searchHasPicture: false,
+                searchLevel: 2,
+                searchLocationString: '',
+                searchMaxAge: 30,
+                searchMinAge: 18,
+                searchOnlineStatus: false,
+                sessionId: localStorage.getItem('sessionId'),
+                startOffset: 0,
+            },
+            transformResponse: [function (data) {
+                let convertData = null;
+                parseString(data, function (err, result) {
+                    convertData = result;
+                });
+                let getData = setInterval(function () {
+                    if (convertData !== undefined) {
+                        clearInterval(getData);
+                    }
+                }, 1);
+                return convertData;
+            }],
+        };
+        window.FETCH(cconfig).then(function (response) {
+            console.log.apply(console,['搜索信息',response]);
+        }).catch(function (err) {
+            // console.log.apply(console,[err]);
+        });
         window.FETCH(config).then(function (response) {
             if (response.data) {
                 if(JSON.stringify(response.data.elements)!==localStorage.getItem('chatItems')){

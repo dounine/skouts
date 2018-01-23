@@ -7,7 +7,7 @@ import UserUtils from './constants/UserUtils';
 import './component/iconfont/iconfont.css';
 import './constants/Properties';
 import axios from 'axios';
-import { CircularProgress } from 'material-ui/Progress';
+import {CircularProgress} from 'material-ui/Progress';
 import purple from 'material-ui/colors/purple';
 
 window.FORM_URLENCODED = function (obj) {
@@ -129,88 +129,60 @@ window.FETCH.interceptors.request.use((config) => {
     return config
 });
 
-function login({username, password}) {
-    let userInfo = {
-        ...window.API_INFO,
-        device_id: '',
-        device_ifa: '00000000-0000-0000-0000-000000000000',
-        device_ifv: '752D0B22-DDFE-4356-9C39-DDB96F6311CE',
-        device_imei: '',
-        device_mac: '02:00:00:00:00:00',
-        device_odin: '2f5672cb76691b989bbd2022a5349939a2d7b952',
-        device_open_id: 'e50fae88af5dda394c9d971b60ee9eb6959debab',
-        device_secure_id: 'D33641F6-5C93-4514-90CC-B0896AFD79BE',
-        devicebrand: 'iOS',
-        devicemodel: 'iPhone',
-        ipaddress: '',
-        latitude: '0.000',
-        locale: 'en-CN',
-        longitude: '0.000',
-        network: 'SKOUT',
-        osversion: '10.3.2',
-        param0: username,
-        param1: password,
-        sessionId: localStorage.getItem('sessionId'),
-        signature: 'f296134bb67f44e20647230ff048927bb80fbfc976c4527914908a0291d97389',
-        ui: 'iPhone SKOUT+ 4.26.0',
-        version: 52
-    };
-    let config = {
-        method: 'POST',
-        url: URLS.IOS_LOGIN,
-        headers: {
-            _protocol: 'https://i'
-        },
-        data: userInfo,
-        transformResponse: window.TRANSFORM_RESPONSE_XML,
-    };
-    return window.FETCH(config)
-}
-
-let getMeInfoUrlConfig = {
-    url: URLS.IOS_ME_INFO,
-    headers: {
-        session_id: null
-    },
-    params: {
-        ...window.API_INFO
-    },
-    transformResponse: window.TRANSFORM_RESPONSE_TEXT,
+let ws = new WebSocket("ws://localhost:3334/chat/v1.0");
+ws.onopen = function (e) {
+    ws.send(JSON.stringify({
+        requestType: 'LOGIN',
+        data: {
+            username: "zhangyao123",
+            password: 'lailake201314'
+        }
+    }))
 };
-window.USER_INFO = JSON.parse(localStorage.getItem('userInfo'));
-window.FETCH(getMeInfoUrlConfig).then(function (response) {
-    window.EVENT.emit('loginSuccess',{
-        sessionId:localStorage.getItem('sessionId'),
-        userId:localStorage.getItem('userId'),
-    });
-    window.USER_INFO = JSON.parse(response.data);
-    console.log.apply(console,[JSON.parse(response.data)]);
-    localStorage.setItem('userInfo',response.data);
-}).catch(function (error) {
-    if (error.response && error.response.status === 403) {
-        login({username:'',password:''})
-            .then(function (res) {
-                console.log.apply(console, ['登录数据', res]);
-                let obj = res.data.GCLoginUserSignedNewUDIDResponse.return;
-                if (obj['description'] === 'Please upgrade to the latest version available.') {//验证码
-                    console.log.apply(console,['请验证']);
-                } else if (obj['description'] === 'Invalid username or password, please try again') {
-                    console.log.apply(console,['输入用户名或者密码错误!']);
-                } else {
-                    window.EVENT.emit('loginSuccess',{
-                        sessionId:'',
-                        userId:obj['id'],
-                    });
-                }
-            });
-        return;
-    }
-    alert('程序获取用户信息异常,请检查版本');
-});
 
-window.EVENT.addListener('loginSuccess',function ({sessionId,userId}) {
-    localStorage.setItem('sessionId',sessionId);
-    localStorage.setItem('userId',userId);
+let token = null;
+ws.onmessage = function (e) {
+    let result = JSON.parse(e.data);
+    console.log.apply(console, ['onmessage', result]);
+    if (result.resultType === "LOGIN_SUCCESS") {
+        localStorage.setItem('sessionId', result.data);
+        window.FETCH({
+            url:'http://localhost:3334/user/v1.0/info/me',
+            headers:{
+                token:token
+            }
+        }).then(function (response) {
+            localStorage.setItem('userInfo', JSON.stringify(response.data.data));
+            window.EVENT.emit('userInfoReady',response.data.data);
+        }).catch(function (error) {
+
+        });
+
+    } else if (result.resultType && result.resultType === 'INIT') {
+        localStorage.setItem('token',result.msg);
+        token = result.msg;
+        console.log.apply(console, ['iyou初始化']);
+    }
+
+};
+
+ws.onclose = function (message) {
+    console.log.apply(console, ['onclose', message]);
+};
+
+ws.onerror = function (message) {
+    console.log.apply(console, ['onerror', message]);
+};
+
+if(localStorage.getItem('userInfo')){
+    window.EVENT.emit('userInfoReady',JSON.parse(localStorage.getItem('userInfo')));
+}
+let isRenderRoot = false;
+window.EVENT.addListener('userInfoReady', function (readUserInfo) {
+    if(isRenderRoot)return;
+    isRenderRoot = true;
+    window.USER_INFO = readUserInfo;
     ReactDOM.render(<Index/>, document.querySelector('#root'));
 });
-ReactDOM.render(<div style={{textAlign:'center'}}><CircularProgress size={50} /></div>, document.querySelector('#root'));
+ReactDOM.render(<div style={{textAlign: 'center'}}><CircularProgress size={50}/>
+</div>, document.querySelector('#root'));
