@@ -134,8 +134,8 @@ ws.onopen = function (e) {
     ws.send(JSON.stringify({
         requestType: 'LOGIN',
         data: {
-            username: "zhangyao123",
-            password: 'lailake201314'
+            username: "",
+            password: ''
         }
     }))
 };
